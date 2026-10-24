@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const supportsHover = window.matchMedia('(hover: hover)').matches;
-
   if ('serviceWorker' in navigator && window.isSecureContext) {
     navigator.serviceWorker.register('./sw.js').catch(() => {
       // Statik file:// açılışında veya desteklenmeyen ortamlarda sessizce devam et.
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       // Depolama erişimi kapalıysa varsayılan tercihe geç
     }
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    return 'dark';
   };
 
   const applyTheme = (theme) => {
@@ -466,7 +465,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const visible = selectedCategory === 'all' || categories.split(' ').includes(selectedCategory);
         card.classList.toggle('is-hidden', !visible);
       });
-      playUiSound('select');
     });
   });
 
@@ -492,150 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.toggle('is-active', active);
         item.setAttribute('aria-selected', String(active));
       });
-      playUiSound('select');
     });
   });
-
-  /* ========================================================================== 
-     10. WEB AUDIO: İSTEĞE BAĞLI MİKRO SESLER
-     ========================================================================== */
-  const audioToggle = document.getElementById('audio-toggle');
-  const AUDIO_KEY = 'portfolio_ui_audio';
-  const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
-  let audioEnabled = false;
-  let audioContext = null;
-  try { audioEnabled = localStorage.getItem(AUDIO_KEY) === 'on'; } catch (e) {}
-
-  const syncAudioButton = () => {
-    if (!audioToggle) return;
-    audioToggle.setAttribute('aria-pressed', String(audioEnabled));
-    audioToggle.setAttribute('aria-label', audioEnabled ? 'Arayüz seslerini kapat' : 'Arayüz seslerini aç');
-  };
-
-  const getAudioContext = () => {
-    if (!AudioContextConstructor) return null;
-    if (!audioContext) audioContext = new AudioContextConstructor();
-    if (audioContext.state === 'suspended') audioContext.resume();
-    return audioContext;
-  };
-
-  function playUiSound(kind = 'click') {
-    if (!audioEnabled || !AudioContextConstructor) return;
-    const context = getAudioContext();
-    if (!context) return;
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const now = context.currentTime;
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(kind === 'select' ? 520 : 390, now);
-    oscillator.frequency.exponentialRampToValueAtTime(kind === 'select' ? 760 : 310, now + 0.06);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.018, now + 0.008);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
-    oscillator.connect(gain).connect(context.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.08);
-  }
-
-  syncAudioButton();
-  if (audioToggle) {
-    audioToggle.addEventListener('click', () => {
-      audioEnabled = !audioEnabled;
-      try { localStorage.setItem(AUDIO_KEY, audioEnabled ? 'on' : 'off'); } catch (e) {}
-      syncAudioButton();
-      if (audioEnabled) playUiSound('select');
-    });
-  }
-
-  const musicToggle = document.getElementById('music-toggle');
-  const MUSIC_KEY = 'portfolio_ambient_music';
-  const ambientNotes = [220, 261.63, 329.63, 392, 329.63, 261.63, 196, 246.94];
-  let musicEnabled = false;
-  let ambientTimer = null;
-  let ambientGain = null;
-  let ambientStep = 0;
-  let ambientSession = 0;
-
-  const syncMusicButton = () => {
-    if (!musicToggle) return;
-    musicToggle.setAttribute('aria-pressed', String(musicEnabled));
-    musicToggle.setAttribute('aria-label', musicEnabled ? 'Sakin ambient müziği kapat' : 'Sakin ambient müziği aç');
-  };
-
-  const scheduleAmbientNote = (session) => {
-    if (!musicEnabled || session !== ambientSession || !AudioContextConstructor) return;
-    const context = getAudioContext();
-    if (!context || !ambientGain) return;
-
-    const now = context.currentTime;
-    const frequency = ambientNotes[ambientStep % ambientNotes.length];
-    const oscillator = context.createOscillator();
-    const secondOscillator = context.createOscillator();
-    const voiceGain = context.createGain();
-    oscillator.type = 'sine';
-    secondOscillator.type = 'triangle';
-    oscillator.frequency.setValueAtTime(frequency, now);
-    secondOscillator.frequency.setValueAtTime(frequency * 2, now);
-    secondOscillator.detune.setValueAtTime(-7, now);
-    voiceGain.gain.setValueAtTime(0.0001, now);
-    voiceGain.gain.exponentialRampToValueAtTime(0.055, now + 0.35);
-    voiceGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.3);
-    oscillator.connect(voiceGain);
-    secondOscillator.connect(voiceGain);
-    voiceGain.connect(ambientGain);
-    oscillator.start(now);
-    secondOscillator.start(now);
-    oscillator.stop(now + 3.5);
-    secondOscillator.stop(now + 3.5);
-
-    ambientStep += 1;
-    ambientTimer = window.setTimeout(() => scheduleAmbientNote(session), 2500);
-  };
-
-  const startAmbientMusic = () => {
-    if (!AudioContextConstructor) {
-      showToast('Bu tarayıcı ambient müziği desteklemiyor');
-      musicEnabled = false;
-      syncMusicButton();
-      return;
-    }
-    const context = getAudioContext();
-    if (!context) return;
-    ambientSession += 1;
-    ambientStep = 0;
-    musicEnabled = true;
-    ambientGain = context.createGain();
-    ambientGain.gain.setValueAtTime(0.0001, context.currentTime);
-    ambientGain.gain.exponentialRampToValueAtTime(0.08, context.currentTime + 1.8);
-    ambientGain.connect(context.destination);
-    scheduleAmbientNote(ambientSession);
-  };
-
-  const stopAmbientMusic = () => {
-    musicEnabled = false;
-    ambientSession += 1;
-    if (ambientTimer) window.clearTimeout(ambientTimer);
-    ambientTimer = null;
-    if (!ambientGain || !audioContext) return;
-    const gainToFade = ambientGain;
-    gainToFade.gain.cancelScheduledValues(audioContext.currentTime);
-    gainToFade.gain.setTargetAtTime(0.0001, audioContext.currentTime, 0.45);
-    window.setTimeout(() => gainToFade.disconnect(), 1800);
-    ambientGain = null;
-  };
-
-  syncMusicButton();
-  if (musicToggle) {
-    musicToggle.addEventListener('click', () => {
-      if (musicEnabled) {
-        stopAmbientMusic();
-      } else {
-        startAmbientMusic();
-      }
-      try { localStorage.setItem(MUSIC_KEY, musicEnabled ? 'on' : 'off'); } catch (e) {}
-      syncMusicButton();
-    });
-  }
 
   const watchDigital = document.getElementById('watch-digital');
   const watchHour = document.getElementById('watch-hour');
@@ -668,15 +524,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateWatch();
   window.setInterval(updateWatch, 1000);
-
-  document.addEventListener('click', (event) => {
-    if (event.target.closest('button, .btn, .nav-link')) playUiSound();
-  }, { passive: true });
-  if (supportsHover) {
-    document.addEventListener('pointerover', (event) => {
-      if (event.target.closest('.nav-link, .cmd-item, .showcase-tab')) playUiSound('select');
-    }, { passive: true });
-  }
 
   /* ==========================================================================
     8. TEK TIKLA E-POSTA KOPYALAMA & PAYLAŞIM
@@ -861,8 +708,6 @@ document.addEventListener('DOMContentLoaded', () => {
         openInsight(action);
       } else if (action === 'share') {
         sharePortfolio();
-      } else if (action === 'music' && musicToggle) {
-        musicToggle.click();
       }
     });
   });
