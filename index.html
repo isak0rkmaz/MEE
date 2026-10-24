@@ -51,14 +51,6 @@
       </div>
 
       <div class="nav-actions">
-        <button class="music-toggle" id="music-toggle" type="button" aria-label="Sakin ambient müziği aç" aria-pressed="false">
-          <svg class="music-on-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-          <svg class="music-off-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="3" y1="3" x2="21" y2="21"></line></svg>
-        </button>
-        <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Arayüz seslerini aç" aria-pressed="false">
-          <svg class="audio-on-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-          <svg class="audio-off-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-        </button>
         <!-- Komut Paleti (Command Palette) Tetikleyici -->
         <button class="cmd-trigger" id="cmd-trigger" type="button" aria-label="Hızlı menüyü aç (Ctrl+K)">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -387,7 +379,7 @@
                   </span>
                 </div>
               </div>
-              <h3 class="edu-school">[Lokman Hekim Mesleki ve Teknik Anadolu Lisesi]</h3>
+              <h3 class="edu-school">Lokman Hekim Mesleki ve Teknik Anadolu Lisesi</h3>
               <p class="edu-program">[Sağlık Hizmetleri]</p>
               <p class="edu-summary">
                İnsan sağlığına ve bakımına yönelik temel teorik eğitimi aldığım, hasta hakları, etik değerler ve klinik disiplini benimsediğim lise eğitimim.              </p>
@@ -405,15 +397,33 @@
                   <span class="edu-icon-box" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
                   </span>
-                  <span class="edu-pill pill-future">Sürekli Gelişim</span>
+                  <span class="edu-pill">PDF Belgesi</span>
                 </div>
-                <time class="edu-date">Sürekli &amp; Gelecek</time>
+                <time class="edu-date">CS50x</time>
               </div>
-              <h3 class="edu-school">Sertifika</h3>
-              <p class="edu-program">Harvard Üniversitesi Computer Science Sertifikası</p>
+              <h3 class="edu-school">Harvard CS50x</h3>
+              <p class="edu-program">Computer Science — CS50x</p>
               <p class="edu-summary">
-                Okul eğitiminin ötesinde uluslararası platformlar, açık kaynak dokümantasyonlar ve pratik atölyelerle kendimi güncelliyor; yeni sertifika ve eğitimleri bu bölüme eklemeye devam ediyorum.
+                
               </p>
+              <div class="edu-document">
+                <div class="edu-document-info">
+                  <span class="edu-document-mark" aria-hidden="true">PDF</span>
+                  <span class="edu-document-meta">
+                    <span class="edu-document-label">CS50x · BELGE</span>
+                    <strong>CS50x (PDF)</strong>
+                    <span class="edu-document-size">Ders belgesi</span>
+                  </span>
+                </div>
+                <div class="edu-document-actions">
+                  <a class="btn btn-primary" href="./cs50x.pdf" target="_blank" rel="noopener noreferrer">
+                    Belgeyi görüntüle
+                  </a>
+                  <a class="btn btn-glass" href="./cs50x.pdf" download="CS50x.pdf">
+                    İndir
+                  </a>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -812,7 +822,6 @@
           <li><button type="button" class="cmd-item" data-action="resume"><span>Hızlı Özgeçmiş Özetini Gör</span><kbd>Özet</kbd></button></li>
           <li><button type="button" class="cmd-item" data-action="assistant"><span>Beni yapay zekaya sor</span><kbd>AI</kbd></button></li>
           <li><button type="button" class="cmd-item" data-action="share"><span>Portfolyoyu Paylaş</span><kbd>Paylaş</kbd></button></li>
-          <li><button type="button" class="cmd-item" data-action="music"><span>Sakin Ambient Müziği Aç / Kapat</span><kbd>Müzik</kbd></button></li>
         </ul>
       </div>
     </div>
