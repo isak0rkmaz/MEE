@@ -1307,7 +1307,82 @@ button {
   color: var(--text-secondary);
 }
 
-/* ==========================================================================
+.edu-document {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(ellipse at 0% 50%, var(--accent-soft), transparent 65%),
+    var(--bg-secondary);
+}
+
+.edu-document-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.edu-document-mark {
+  width: 52px;
+  height: 58px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-highlight);
+  border-radius: 12px;
+  background: var(--bg-card-solid);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-card);
+}
+
+.edu-document-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.edu-document-label {
+  color: var(--accent);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.edu-document-meta strong {
+  color: var(--text-primary);
+  font-size: 0.96rem;
+}
+
+.edu-document-size {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+.edu-document-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.edu-document-actions .btn {
+  min-height: 42px;
+  padding: 9px 15px;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+/* ========================================================================== 
    9. BÖLÜM 4 — İLGİ ALANLARIM
    ========================================================================== */
 .interests-bento {
@@ -1915,48 +1990,6 @@ button {
   will-change: transform;
 }
 
-.audio-toggle {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  background: var(--bg-card-solid);
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.music-toggle {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  background: var(--bg-card-solid);
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.audio-toggle:hover,
-.audio-toggle[aria-pressed="true"],
-.music-toggle:hover,
-.music-toggle[aria-pressed="true"] {
-  color: var(--accent);
-  border-color: var(--accent);
-  transform: scale(1.06);
-}
-
-.audio-off-icon { display: none; }
-.audio-toggle[aria-pressed="true"] .audio-on-icon { display: none; }
-.audio-toggle[aria-pressed="true"] .audio-off-icon { display: block; }
-.music-off-icon { display: none; }
-.music-toggle[aria-pressed="true"] .music-on-icon { display: none; }
-.music-toggle[aria-pressed="true"] .music-off-icon { display: block; }
-
 .showcase-tabs {
   position: absolute;
   left: 18px;
@@ -2205,8 +2238,6 @@ button {
     gap: 4px;
   }
 
-  .audio-toggle,
-  .music-toggle,
   .theme-toggle,
   .cmd-trigger {
     width: 32px;
@@ -2377,6 +2408,20 @@ button {
 
   .timeline-container {
     padding-left: 28px;
+  }
+
+  .edu-document {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .edu-document-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .edu-document-actions .btn {
+    flex: 1 1 auto;
   }
 
   .node-indicator {
